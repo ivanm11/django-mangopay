@@ -23,7 +23,7 @@ from mangopaysdk.types.money import Money
 from mangopaysdk.types.payoutpaymentdetailsbankwire import (
     PayOutPaymentDetailsBankWire)
 from mangopaysdk.types.payinexecutiondetailsdirect import (
-    PayInExecutionDetailsDirect)        
+    PayInExecutionDetailsDirect)
 from mangopaysdk.types.payinpaymentdetailscard import PayInPaymentDetailsCard
 from django_countries.fields import CountryField
 from django_iban.fields import IBANField, SWIFTBICField
@@ -119,8 +119,8 @@ class MangoPayNaturalUser(MangoPayUser):
 
     def _build(self):
         mangopay_user = UserNatural()
-        mangopay_user.FirstName = self.user.first_name
-        mangopay_user.LastName = self.user.last_name
+        mangopay_user.FirstName = self.user.get_first_name()
+        mangopay_user.LastName = self.user.get_last_name()
         mangopay_user.Email = self.user.email
         mangopay_user.Birthday = self._birthday_fmt()
         mangopay_user.CountryOfResidence = self.country_of_residence.code
