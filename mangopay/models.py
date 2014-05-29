@@ -329,6 +329,8 @@ class MangoPayWallet(models.Model):
     mangopay_id = models.PositiveIntegerField(null=True, blank=True)
     mangopay_user = models.ForeignKey(
         MangoPayUser, related_name="mangopay_wallets")
+    currency = models.CharField(max_length=9, blank=True, null=True)
+    description = models.CharField(max_length=255, blank=True, null=True)
 
     def create(self, currency, description=""):
         mangopay_wallet = Wallet()
@@ -337,7 +339,8 @@ class MangoPayWallet(models.Model):
         mangopay_wallet.Currency = currency
         client = get_mangopay_api_client()
         created_mangopay_wallet = client.wallets.Create(mangopay_wallet)
-        self.mangopay_id = created_mangopay_wallet.Id
+        self.currency = currency
+        self.description = description
         self.save()
 
     def balance(self):
