@@ -339,6 +339,7 @@ class MangoPayWallet(models.Model):
         mangopay_wallet.Currency = currency
         client = get_mangopay_api_client()
         created_mangopay_wallet = client.wallets.Create(mangopay_wallet)
+        self.mangopay_id = created_mangopay_wallet.Id
         self.currency = currency
         self.description = description
         self.save()
