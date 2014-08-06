@@ -319,6 +319,8 @@ class MangoPayBankAccount(models.Model):
         mangopay_bank_account.OwnerAddress = self.address
         mangopay_bank_account.IBAN = self.iban
         mangopay_bank_account.BIC = self.bic
+        if not mangopay_bank_account.IBAN:
+            mangopay_bank_account.Type = 'OTHER'
         created_bank_account = client.users.CreateBankAccount(
             str(self.mangopay_user.mangopay_id), mangopay_bank_account)
         self.mangopay_id = created_bank_account.Id
