@@ -309,6 +309,7 @@ class MangoPayBankAccount(models.Model):
     iban = IBANField()
     bic = SWIFTBICField()
     address = models.CharField(max_length=254)
+    account_number = models.CharField(max_length=40, blank=True)
 
     def create(self):
         client = get_mangopay_api_client()
@@ -320,6 +321,7 @@ class MangoPayBankAccount(models.Model):
         mangopay_bank_account.IBAN = self.iban
         mangopay_bank_account.BIC = self.bic
         if not mangopay_bank_account.IBAN:
+            mangopay_bank_account.AccountNumber = self.account_number
             mangopay_bank_account.Type = 'OTHER'
         created_bank_account = client.users.CreateBankAccount(
             str(self.mangopay_user.mangopay_id), mangopay_bank_account)
