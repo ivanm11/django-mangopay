@@ -26,6 +26,7 @@ from mangopaysdk.types.payinexecutiondetailsdirect import (
     PayInExecutionDetailsDirect)
 from mangopaysdk.types.payinpaymentdetailscard import PayInPaymentDetailsCard
 from mangopaysdk.types.bankaccountdetailsother import BankAccountDetailsOTHER
+from mangopaysdk.types.bankaccountdetailsiban import BankAccountDetailsIBAN
 from django_countries.fields import CountryField
 from django_iban.fields import IBANField, SWIFTBICField
 from money import Money as PythonMoney
@@ -327,7 +328,9 @@ class MangoPayBankAccount(models.Model):
             bank_details = BankAccountDetailsOTHER()
             bank_details.AccountNumber = self.account_number
             bank_details.Country = self.country
-            mangopay_bank_account.Details = bank_details
+        else:
+            bank_details = BankAccountDetailsIBAN()
+        mangopay_bank_account.Details = bank_details
         created_bank_account = client.users.CreateBankAccount(
             str(self.mangopay_user.mangopay_id), mangopay_bank_account)
         self.mangopay_id = created_bank_account.Id
